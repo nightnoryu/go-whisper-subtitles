@@ -1,5 +1,5 @@
 package app
 
 type SubtitlesService interface {
-	GenerateSubtitles() error
+	GenerateSubtitles(inputFilename string) (string, error)
 }
