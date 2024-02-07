@@ -67,6 +67,11 @@ func (s *subtitlesService) GenerateSubtitles(inputFilename string) (string, erro
 		n++
 	}
 
+	err = os.Remove(inputFilename)
+	if err != nil {
+		return "", err
+	}
+
 	return "test.srt", nil
 }
 

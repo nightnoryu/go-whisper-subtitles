@@ -1,6 +1,8 @@
 package infrastructure
 
 import (
+	"os"
+
 	"go-whisper-subtitles/pkg/go-whisper-subtitles/app"
 
 	ffmpeg "github.com/u2takey/ffmpeg-go"
@@ -31,6 +33,11 @@ func (s *mediaService) MergeSubtitles(inputFilename, subtitlesFilename string) e
 	err := ffmpeg.Output(input, "result.mkv", ffmpeg.KwArgs{"c": "copy", "c:s": "srt"}).
 		OverWriteOutput().
 		Run()
+	if err != nil {
+		return err
+	}
+
+	err = os.Remove(subtitlesFilename)
 	if err != nil {
 		return err
 	}
