@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"go-whisper-subtitles/pkg/go-whisper-subtitles/infrastructure"
+	"gosubs/pkg/gosubs/infrastructure"
 
 	"github.com/urfave/cli/v2"
 )

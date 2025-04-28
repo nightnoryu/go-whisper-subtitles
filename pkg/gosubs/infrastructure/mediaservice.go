@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"os"
 
-	"go-whisper-subtitles/pkg/go-whisper-subtitles/app"
+	"gosubs/pkg/gosubs/app"
 
 	ffmpeg "github.com/u2takey/ffmpeg-go"
 )

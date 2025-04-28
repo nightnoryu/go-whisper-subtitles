@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"go-whisper-subtitles/pkg/go-whisper-subtitles/app"
+	"gosubs/pkg/gosubs/app"
 
 	"github.com/ggerganov/whisper.cpp/bindings/go/pkg/whisper"
 	"github.com/go-audio/wav"
