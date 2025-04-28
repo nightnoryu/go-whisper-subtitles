@@ -9,16 +9,20 @@ Prerequisites:
 1. Linux
 2. Git
 
-Firstly, clone the repository:
+Firstly, clone the repository into your `$GOPATH`:
 
 ```shell
+mkdir -p $GOPATH/src/github.com/nightnoryu
+cd $GOPATH/src/github.com/nightnoryu
+
 git clone git@github.com:nightnoryu/gosubs.git
+cd gosubs
 ```
 
 Then build the binary:
 
 ```shell
-./bin/gosubsbrewkit build
+bin/gosubsbrewkit build
 ```
 
 This script will download a [brewkit build system](https://github.com/ispringtech/brewkit) binary and put it in the `bin` directory of the project.
