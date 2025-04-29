@@ -8,6 +8,7 @@ Prerequisites:
 
 1. Linux
 2. Git
+3. Docker
 
 Firstly, clone the repository into your `$GOPATH`:
 
@@ -15,7 +16,7 @@ Firstly, clone the repository into your `$GOPATH`:
 mkdir -p $GOPATH/src/github.com/nightnoryu
 cd $GOPATH/src/github.com/nightnoryu
 
-git clone git@github.com:nightnoryu/gosubs.git
+git clone --recurse-submodules git@github.com:nightnoryu/gosubs.git
 cd gosubs
 ```
 
@@ -25,15 +26,9 @@ Then build the binary:
 bin/gosubsbrewkit build
 ```
 
-This script will download a [brewkit build system](https://github.com/ispringtech/brewkit) binary and put it in the `bin` directory of the project.
+This script will download a [brewkit build system](https://github.com/ispringtech/brewkit) binary and put it in
+the `bin` directory of the project. The build is entirely dockerized, so you don't have to install other dependencies.
+First build may take a while, because we're building whisper.cpp bindings for Go, but subsequent builds will be much
+faster, harnessing the power of brewkit image caching.
 
-## Tasks to do
-
-- [ ] Add model loading from the web
-- [ ] Provide `libwhisper.a` and header files
-- [ ] Add Makefile with proper linking
-- [ ] Remove hardcoded filenames, use temporary directory with randomly generated filenames and remove leftovers
-- [ ] Add CLI parameters
-  - to mux the subtitles file or not + SRT output filename
-  - specifying output container format (mkv/mp4/webm)
-- [ ] Make fancy CLI output & logging
+_STILL UNDER CONSTRUCTION_
