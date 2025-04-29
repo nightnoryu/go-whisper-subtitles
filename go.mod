@@ -1,6 +1,6 @@
 module github.com/nightnoryu/gosubs
 
-go 1.24.2
+go 1.24
 
 require (
 	github.com/ggerganov/whisper.cpp/bindings/go v0.0.0-20240128174410-e72e4158debb
