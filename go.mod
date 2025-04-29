@@ -3,7 +3,7 @@ module github.com/nightnoryu/gosubs
 go 1.24
 
 require (
-	github.com/ggerganov/whisper.cpp/bindings/go v0.0.0-20240128174410-e72e4158debb
+	github.com/ggerganov/whisper.cpp/bindings/go v0.0.0-20250428171138-2e30e6df59c9
 	github.com/go-audio/wav v1.1.0
 	github.com/u2takey/ffmpeg-go v0.5.0
 	github.com/urfave/cli/v2 v2.27.1

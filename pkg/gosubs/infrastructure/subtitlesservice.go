@@ -40,7 +40,7 @@ func (s *subtitlesService) GenerateSubtitles(inputFilename string) (string, erro
 	}
 
 	context.ResetTimings()
-	err = context.Process(samples, nil, nil)
+	err = context.Process(samples, nil, nil, nil)
 	if err != nil {
 		return "", err
 	}

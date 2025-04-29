@@ -24,7 +24,7 @@ func main() {
 				return err
 			}
 
-			subtitlesService := infrastructure.NewSubtitlesService("ggml-base.en.bin")
+			subtitlesService := infrastructure.NewSubtitlesService("model/ggml-base.bin")
 			subtitlesFile, err := subtitlesService.GenerateSubtitles(audioFile)
 			if err != nil {
 				return err
