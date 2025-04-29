@@ -1,5 +1,7 @@
 package app
 
+import "io"
+
 type SubtitlesService interface {
-	GenerateSubtitles(inputFilename string) (string, error)
+	GenerateSubtitles(inputFile io.ReadSeeker, outputFile io.Writer) error
 }

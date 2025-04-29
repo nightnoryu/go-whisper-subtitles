@@ -1,40 +1,62 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"log"
 	"os"
 
-	"github.com/nightnoryu/gosubs/pkg/gosubs/infrastructure"
+	"github.com/nightnoryu/gosubs/pkg/gosubs/app"
+	"github.com/nightnoryu/gosubs/pkg/gosubs/infrastructure/ffmpeg"
+	"github.com/nightnoryu/gosubs/pkg/gosubs/infrastructure/whisper"
 
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
+)
+
+const (
+	argInputFile  = "input-file"
+	argOutputFile = "output-file"
+	argModelPath  = "model"
 )
 
 func main() {
-	app := &cli.App{
-		Name:  "test",
-		Usage: "test",
-		Action: func(ctx *cli.Context) error {
-			inputFilename := ctx.Args().Get(0)
-			fmt.Println("Transcoding file ", inputFilename)
-
-			mediaService := infrastructure.NewMediaService()
-			audioFile, err := mediaService.ExtractAudio(inputFilename)
-			if err != nil {
-				return err
-			}
-
-			subtitlesService := infrastructure.NewSubtitlesService("model/ggml-base.bin")
-			subtitlesFile, err := subtitlesService.GenerateSubtitles(audioFile)
-			if err != nil {
-				return err
-			}
-
-			return mediaService.MergeSubtitles(inputFilename, subtitlesFile)
+	cmd := &cli.Command{
+		Name:  "gosubs",
+		Usage: "generate subtitles for a video",
+		Arguments: []cli.Argument{
+			&cli.StringArg{
+				Name:      argInputFile,
+				UsageText: "path to the input video",
+			},
+			&cli.StringArg{
+				Name:      argOutputFile,
+				UsageText: "path to the output video",
+			},
 		},
-	}
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:      argModelPath,
+				Usage:     "path to the ggml whisper model",
+				Required:  true,
+				Value:     "model/ggml-base.bin",
+				TakesFile: true,
+			},
+		},
+		Action: func(ctx context.Context, cmd *cli.Command) error {
+			inputFilename := cmd.StringArg(argInputFile)
+			outputFilename := cmd.StringArg(argOutputFile)
+			modelPath := cmd.String(argModelPath)
 
-	if err := app.Run(os.Args); err != nil {
+			mediaService := ffmpeg.NewMediaService()
+			subtitlesService, err := whisper.NewSubtitlesService(modelPath)
+			if err != nil {
+				return err
+			}
+			transcribingService := app.NewTranscribingService(mediaService, subtitlesService)
+
+			return transcribingService.TranscribeFile(inputFilename, outputFilename)
+		}}
+
+	if err := cmd.Run(context.Background(), os.Args); err != nil {
 		log.Fatal(err)
 	}
 }

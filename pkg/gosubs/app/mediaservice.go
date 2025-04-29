@@ -1,6 +1,6 @@
 package app
 
 type MediaService interface {
-	ExtractAudio(inputFilename string) (string, error)
-	MergeSubtitles(inputFilename, subtitlesFilename string) error
+	ExtractAudio(inputFilename, outputFilename string) error
+	MergeSubtitles(inputFilename, subtitlesFilename, outputFilename string) error
 }

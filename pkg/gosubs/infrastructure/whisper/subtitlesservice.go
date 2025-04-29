@@ -1,6 +1,7 @@
-package infrastructure
+package whisper
 
 import (
+	stderrors "errors"
 	"fmt"
 	"io"
 	"os"
@@ -10,46 +11,51 @@ import (
 
 	"github.com/ggerganov/whisper.cpp/bindings/go/pkg/whisper"
 	"github.com/go-audio/wav"
+	"github.com/pkg/errors"
 )
 
-func NewSubtitlesService(modelPath string) app.SubtitlesService {
+var ErrModelNotFound = stderrors.New("model not found")
+
+func NewSubtitlesService(modelPath string) (app.SubtitlesService, error) {
+	if _, err := os.Stat(modelPath); os.IsNotExist(err) {
+		return nil, errors.WithStack(ErrModelNotFound)
+	}
+
 	return &subtitlesService{
 		modelPath: modelPath,
-	}
+	}, nil
 }
 
 type subtitlesService struct {
 	modelPath string
 }
 
-func (s *subtitlesService) GenerateSubtitles(inputFilename string) (string, error) {
+func (s *subtitlesService) GenerateSubtitles(inputFile io.ReadSeeker, outputFile io.Writer) error {
 	model, err := whisper.New(s.modelPath)
 	if err != nil {
-		return "", err
+		return err
 	}
 	defer model.Close()
 
 	context, err := model.NewContext()
 	if err != nil {
-		return "", err
+		return err
+	}
+	err = context.SetLanguage("auto")
+	if err != nil {
+		return err
 	}
 
-	samples, err := s.loadSamples(inputFilename)
+	samples, err := s.loadSamples(inputFile)
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	context.ResetTimings()
 	err = context.Process(samples, nil, nil, nil)
 	if err != nil {
-		return "", err
+		return err
 	}
-
-	outputFile, err := os.Create("test.srt")
-	if err != nil {
-		return "", err
-	}
-	defer outputFile.Close()
 
 	n := 1
 	for {
@@ -57,7 +63,7 @@ func (s *subtitlesService) GenerateSubtitles(inputFilename string) (string, erro
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			return "", err
+			return err
 		}
 
 		fmt.Fprintln(outputFile, n)
@@ -67,22 +73,11 @@ func (s *subtitlesService) GenerateSubtitles(inputFilename string) (string, erro
 		n++
 	}
 
-	err = os.Remove(inputFilename)
-	if err != nil {
-		return "", err
-	}
-
-	return "test.srt", nil
+	return nil
 }
 
-func (s *subtitlesService) loadSamples(inputFilename string) ([]float32, error) {
-	file, err := os.Open(inputFilename)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	decoder := wav.NewDecoder(file)
+func (s *subtitlesService) loadSamples(inputFile io.ReadSeeker) ([]float32, error) {
+	decoder := wav.NewDecoder(inputFile)
 	buf, err := decoder.FullPCMBuffer()
 	if err != nil {
 		return nil, err
