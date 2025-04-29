@@ -68,9 +68,14 @@ local gocache = [
                 workdir: "/app",
                 env: {
                     GOCACHE: "/app/cache/go-build",
-                    CGO_ENABLED: "0"
+                    CGO_ENABLED: "1",
+                    LIBRARY_PATH: "/app/lib",
+                    C_INCLUDE_PATH: "/app/lib/include",
                 },
-                copy: copyFrom('gosources', '/app', '/app')
+                copy: [
+                    copyFrom('gosources', '/app', '/app'),
+                    copy('/lib', '/app/lib')
+                ]
             },
 
             gosources: {
