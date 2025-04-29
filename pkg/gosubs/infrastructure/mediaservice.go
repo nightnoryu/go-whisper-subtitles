@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"os"
 
-	"gosubs/pkg/gosubs/app"
+	"github.com/nightnoryu/gosubs/pkg/gosubs/app"
 
 	ffmpeg "github.com/u2takey/ffmpeg-go"
 )

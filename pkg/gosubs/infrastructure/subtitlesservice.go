@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"gosubs/pkg/gosubs/app"
+	"github.com/nightnoryu/gosubs/pkg/gosubs/app"
 
 	"github.com/ggerganov/whisper.cpp/bindings/go/pkg/whisper"
 	"github.com/go-audio/wav"

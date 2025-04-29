@@ -1,3 +1,3 @@
 {
-    gobuilder: "golang:1.22.5"
+    gobuilder: "golang:1.24.2"
 }

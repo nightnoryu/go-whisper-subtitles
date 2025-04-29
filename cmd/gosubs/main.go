@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"gosubs/pkg/gosubs/infrastructure"
+	"github.com/nightnoryu/gosubs/pkg/gosubs/infrastructure"
 
 	"github.com/urfave/cli/v2"
 )
