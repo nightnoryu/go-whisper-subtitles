@@ -73,8 +73,13 @@ local gocache = [
                     C_INCLUDE_PATH: "/app/lib/include",
                 },
                 copy: [
-                    copyFrom('gosources', '/app', '/app'),
-                    copy('/lib', '/app/lib')
+                    copyFrom("gosources", "/app", "/app"),
+
+                    copyFrom("whisper", "/app/ggml/include/*.h", "/app/lib/include/"),
+                    copyFrom("whisper", "/app/build_go/ggml/src/*.a", "/app/lib"),
+
+                    copyFrom("whisper", "/app/include/*.h", "/app/lib/include/"),
+                    copyFrom("whisper", "/app/build_go/src/*.a", "/app/lib/"),
                 ]
             },
 
@@ -83,6 +88,13 @@ local gocache = [
                 workdir: "/app",
                 copy: [copy(source, source) for source in gosources]
             },
+
+            whisper: {
+                from: images.gobuilder,
+                workdir: "/app",
+                copy: copy("/whisper.cpp", "/app"),
+                command: "apt-get update && apt-get install -y git cmake && cd /app/bindings/go && make"
+            }
         }
     }
 }
