@@ -9,13 +9,14 @@ Prerequisites:
 1. Linux
 2. Git
 3. Docker
+4. ffmpeg
+5. [BrewKit](https://github.com/ispringtech/brewkit)
 
 Firstly, clone the repository into your `$GOPATH`:
 
 ```shell
 mkdir -p $GOPATH/src/github.com/nightnoryu
 cd $GOPATH/src/github.com/nightnoryu
-
 git clone --recurse-submodules git@github.com:nightnoryu/gosubs.git
 cd gosubs
 ```
@@ -23,12 +24,7 @@ cd gosubs
 Then build the binary:
 
 ```shell
-bin/gosubsbrewkit build
+brewkit build
 ```
 
-This script will download a [brewkit build system](https://github.com/ispringtech/brewkit) binary and put it in
-the `bin` directory of the project. The build is entirely dockerized, so you don't have to install other dependencies.
-First build may take a while, because we're building whisper.cpp bindings for Go, but subsequent builds will be much
-faster, harnessing the power of brewkit image caching.
-
-_STILL UNDER CONSTRUCTION_
+First build may take a while, because we're building whisper.cpp bindings for Go, but subsequent builds will be much faster, harnessing the power of brewkit image caching.
