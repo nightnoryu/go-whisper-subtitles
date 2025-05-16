@@ -1,5 +1,8 @@
 # gosubs
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/nightnoryu/gosubs)](https://goreportcard.com/report/github.com/nightnoryu/gosubs)
+[![GitHub License](https://img.shields.io/github/license/nightnoryu/gosubs)](https://opensource.org/license/MIT)
+
 A simple tool for generating subtitles using [OpenAI Whisper](https://huggingface.co/openai/whisper-base) 📔
 
 ## Building for local development
