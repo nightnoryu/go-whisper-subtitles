@@ -1,7 +1,6 @@
 package whisper
 
 import (
-	stderrors "errors"
 	"fmt"
 	"io"
 	"os"
@@ -11,14 +10,11 @@ import (
 
 	"github.com/ggerganov/whisper.cpp/bindings/go/pkg/whisper"
 	"github.com/go-audio/wav"
-	"github.com/pkg/errors"
 )
-
-var ErrModelNotFound = stderrors.New("model not found")
 
 func NewSubtitlesService(modelPath string) (app.SubtitlesService, error) {
 	if _, err := os.Stat(modelPath); os.IsNotExist(err) {
-		return nil, errors.WithStack(ErrModelNotFound)
+		return nil, fmt.Errorf("model at %s not found", modelPath)
 	}
 
 	return &subtitlesService{

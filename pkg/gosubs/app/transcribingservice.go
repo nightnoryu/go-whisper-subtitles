@@ -1,9 +1,8 @@
 package app
 
 import (
+	"fmt"
 	"os"
-
-	"github.com/pkg/errors"
 )
 
 type TranscribingService interface {
@@ -28,14 +27,14 @@ type transcribingService struct {
 func (s *transcribingService) TranscribeFile(inputFilename, outputFilename string) error {
 	tempAudioFile, err := os.CreateTemp("", "*.wav")
 	if err != nil {
-		return errors.WithStack(err)
+		return fmt.Errorf("failed to create temp file: %w", err)
 	}
 	defer tempAudioFile.Close()
 	defer os.Remove(tempAudioFile.Name())
 
 	tempSubtitlesFile, err := os.CreateTemp("", "*.srt")
 	if err != nil {
-		return errors.WithStack(err)
+		return fmt.Errorf("failed to create temp file: %w", err)
 	}
 	defer tempSubtitlesFile.Close()
 	defer os.Remove(tempSubtitlesFile.Name())
