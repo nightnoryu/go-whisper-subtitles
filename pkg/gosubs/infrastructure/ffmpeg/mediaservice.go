@@ -1,7 +1,9 @@
 package ffmpeg
 
 import (
+	"errors"
 	"fmt"
+	"os"
 
 	"github.com/nightnoryu/gosubs/pkg/gosubs/app"
 
@@ -15,6 +17,10 @@ func NewMediaService() app.MediaService {
 type mediaService struct{}
 
 func (s *mediaService) ExtractAudio(inputFilename, outputFilename string) error {
+	if _, err := os.Stat(inputFilename); errors.Is(err, os.ErrNotExist) {
+		return fmt.Errorf("input file %s not found", inputFilename)
+	}
+
 	err := ffmpeg.
 		Input(inputFilename).
 		Output(outputFilename, ffmpeg.KwArgs{"ar": "16000", "ac": "1", "c:a": "pcm_s16le"}).

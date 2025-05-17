@@ -6,7 +6,7 @@ import (
 )
 
 type TranscribingService interface {
-	TranscribeFile(inputFilename, outputFilename string) error
+	TranscribeVideo(inputFilename, outputFilename string) error
 }
 
 func NewTranscribingService(
@@ -24,7 +24,7 @@ type transcribingService struct {
 	subtitlesService SubtitlesService
 }
 
-func (s *transcribingService) TranscribeFile(inputFilename, outputFilename string) error {
+func (s *transcribingService) TranscribeVideo(inputFilename, outputFilename string) error {
 	tempAudioFile, err := os.CreateTemp("", "*.wav")
 	if err != nil {
 		return fmt.Errorf("failed to create temp file: %w", err)

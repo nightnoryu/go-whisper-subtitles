@@ -14,7 +14,7 @@ import (
 
 func NewSubtitlesService(modelPath string) (app.SubtitlesService, error) {
 	if _, err := os.Stat(modelPath); os.IsNotExist(err) {
-		return nil, fmt.Errorf("model at %s not found", modelPath)
+		return nil, fmt.Errorf("model %s not found", modelPath)
 	}
 
 	return &subtitlesService{
