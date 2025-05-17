@@ -93,7 +93,7 @@ local gocache = [
                 from: images.gobuilder,
                 workdir: "/app",
                 copy: copy("/whisper.cpp", "/app"),
-                command: "apt-get update && apt-get install -y git cmake && cd /app/bindings/go && make"
+                command: "apt-get update && apt-get install -y git cmake && cd /app/bindings/go && make whisper"
             }
         }
     }
