@@ -47,7 +47,7 @@ if [ -n "$SELECTED_MODEL" ]; then
   echo "downloading $SELECTED_MODEL..."
   curl --request GET -L --progress-bar \
        --url "$BASE_URL/$SELECTED_MODEL?download=true" \
-       --output "model/$SELECTED_MODEL"
+       --output "$SELECTED_MODEL"
 else
   echo no model selected.
 fi
