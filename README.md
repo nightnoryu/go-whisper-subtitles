@@ -39,5 +39,5 @@ After getting the binary (either by building or from the [releases](https://gith
 Then you can use `gosubs` as follows:
 
 ```shell
-gosubs -model=ggml-medium.bin input.mp4 output.mp4
+gosubs --model ggml-medium.bin input.mp4 output.mp4
 ```

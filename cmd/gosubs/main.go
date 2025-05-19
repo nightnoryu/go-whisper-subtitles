@@ -1,7 +1,8 @@
 package main
 
 import (
-	"log"
+	"fmt"
+	"os"
 
 	"github.com/nightnoryu/gosubs/pkg/gosubs/app"
 	"github.com/nightnoryu/gosubs/pkg/gosubs/infrastructure/ffmpeg"
@@ -9,17 +10,24 @@ import (
 )
 
 func main() {
-	args := parseArguments()
+	if err := run(); err != nil {
+		fmt.Fprintf(os.Stderr, "%+v\n", err)
+		os.Exit(1)
+	}
+}
+
+func run() error {
+	args, err := parseArguments()
+	if err != nil {
+		return err
+	}
 
 	transcribingService, err := buildTranscribingService(args)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	err = transcribingService.TranscribeVideo(args.inputFilename, args.outputFilename)
-	if err != nil {
-		log.Fatal(err)
-	}
+	return transcribingService.TranscribeVideo(args.inputFilename, args.outputFilename)
 }
 
 func buildTranscribingService(a *arguments) (app.TranscribingService, error) {

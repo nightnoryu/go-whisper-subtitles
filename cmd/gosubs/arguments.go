@@ -1,25 +1,43 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 )
 
-func parseArguments() *arguments {
-	model := flag.String("model", "ggml-medium.bin", "path to the whisper ggml model")
-	flag.Parse()
+func parseArguments() (*arguments, error) {
+	set := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
+	set.Usage = func() {
+		_, executableName := filepath.Split(os.Args[0])
+		fmt.Fprintf(set.Output(), "Usage: %s [options] <input> <output>\n", executableName)
+	}
 
-	if len(flag.Args()) != 2 {
-		fmt.Printf("usage: %s {input filename} {output filename} [-model=ggml-medium.bin]\n", os.Args[0])
-		os.Exit(1)
+	model := set.String("model", "ggml-medium.bin", "path to the whisper ggml model")
+
+	if err := set.Parse(os.Args[1:]); err != nil {
+		return nil, err
+	}
+
+	inputFilename := set.Arg(0)
+	if inputFilename == "" {
+		set.Usage()
+		return nil, errors.New("no input provided")
+	}
+
+	outputFilename := set.Arg(1)
+	if outputFilename == "" {
+		set.Usage()
+		return nil, errors.New("no output provided")
 	}
 
 	return &arguments{
 		model:          *model,
-		inputFilename:  flag.Arg(0),
-		outputFilename: flag.Arg(1),
-	}
+		inputFilename:  inputFilename,
+		outputFilename: outputFilename,
+	}, nil
 }
 
 type arguments struct {
