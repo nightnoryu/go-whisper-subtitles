@@ -3,9 +3,11 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/nightnoryu/gosubs/pkg/gosubs/app"
 	"github.com/nightnoryu/gosubs/pkg/gosubs/infrastructure/ffmpeg"
+	"github.com/nightnoryu/gosubs/pkg/gosubs/infrastructure/modelprovider"
 	"github.com/nightnoryu/gosubs/pkg/gosubs/infrastructure/whisper"
 )
 
@@ -31,8 +33,21 @@ func run() error {
 }
 
 func buildTranscribingService(a *arguments) (app.TranscribingService, error) {
+	ex, err := os.Executable()
+	if err != nil {
+		return nil, err
+	}
+
+	modelsDir := filepath.Dir(ex)
+	modelProvider := modelprovider.NewModelProvider(modelsDir)
+
+	modelPath, err := modelProvider.DownloadModel(a.model)
+	if err != nil {
+		return nil, err
+	}
+
 	mediaService := ffmpeg.NewMediaService()
-	subtitlesService, err := whisper.NewSubtitlesService(a.model)
+	subtitlesService, err := whisper.NewSubtitlesService(modelPath)
 	if err != nil {
 		return nil, err
 	}
