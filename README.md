@@ -34,6 +34,8 @@ First build may take a while, because we're building whisper.cpp bindings for Go
 
 ## Usage
 
+TODO: update
+
 After getting the binary (either by building or from the [releases](https://github.com/nightnoryu/gosubs/releases) page), you need to download the Whisper model. You can use the provided [script](https://github.com/nightnoryu/gosubs/blob/master/bin/get-model) for that or download the model from HuggingFace yourself: https://huggingface.co/ggerganov/whisper.cpp
 
 Then you can use `gosubs` as follows:
